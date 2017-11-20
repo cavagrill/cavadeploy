@@ -1,0 +1,90 @@
+---
+- name: clone/update repository
+  git:
+    accept_hostkey: true
+    dest: ~/deploy/{{ product }}
+    key_file: ~/.ssh/id_rsa
+    repo: ssh://git@github.com/cavagrill/{{ product }}.git
+    update: true
+    force: true
+  register: git
+- name: create virtualenv with up-to-date pip for python 2
+  pip:
+    extra_args: '--upgrade'
+    name: pip,wheel,setuptools
+    virtualenv: ~/virtualenv
+    virtualenv_command: virtualenv
+  when: python_version is defined and python_version == 2
+- name: create venv with up-to-date pip for python 3
+  pip:
+    extra_args: '--upgrade'
+    name: pip,wheel,setuptools
+    virtualenv: ~/venv
+    virtualenv_command: pyvenv-3.6
+  when: python_version is defined and python_version == 3
+- name: install packages into virtualenv for python 2
+  pip:
+    extra_args: '--upgrade'
+    requirements: ~/deploy/{{ product }}/requirements.txt
+    virtualenv: ~/virtualenv
+    virtualenv_command: virtualenv
+  when: python_version is defined and python_version == 2
+- name: install packages into venv for python 3
+  pip:
+    extra_args: '--upgrade'
+    requirements: ~/deploy/{{ product }}/requirements.txt
+    virtualenv: ~/venv
+    virtualenv_command: pyvenv-3.6
+  when: python_version is defined and python_version == 3
+- name: create cron jobs
+  cron:
+    day: '{{ item.day }}'
+    disabled: false
+    hour: '{{ item.hour }}'
+    job: '{{ item.job }} >/var/log/cron/{{ item.name }}.log'
+    minute: '{{ item.minute }}'
+    month: '{{ item.month }}'
+    name: '{{ item.name }}'
+    state: '{{ item.state }}'
+    user: '{{ user }}'
+    weekday: '{{ item.weekday }}'
+  with_items: '{{ cron_jobs }}'
+  when: do_cron is defined and do_cron
+- name: configure cron shell
+  cron:
+    name: SHELL
+    value: "/bin/bash"
+    env: yes
+  when: do_cron is defined and do_cron
+- name: configure cron mail
+  cron:
+    name: MAILTO
+    value: "{{ slack_email }}"
+    env: yes
+  when: do_cron is defined and do_cron
+- name: configure cron path
+  cron:
+    name: PATH
+    value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    env: yes
+- name: install node requirements
+  npm:
+    path: "{{ npm_install }}"
+  when: npm_install is defined and npm_install
+- name: check for post script
+  command: test -x ~/deploy/{{ product }}/cavadeploy_post.sh
+  register: post_script
+  ignore_errors: True
+- name: run post script, if present
+  command: ./cavadeploy_post.sh
+  args:
+    chdir: ~/deploy/{{ product }}
+  when: post_script|succeeded
+- name: tell slack what happened
+  slack:
+    color: good
+    msg: '{{ product }} version {{ git.after }} has been deployed to {{ inventory_hostname}}.'
+    token: '{{ slack_token }}'
+  become: false
+  delegate_to: localhost
+  when: notify_slack is defined and notify_slack

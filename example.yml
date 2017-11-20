@@ -1,0 +1,16 @@
+- become: true
+  become_user: example
+  hosts: targethost
+  roles:
+  - cron_jobs:
+    - day: '*'
+      hour: 10
+      job: cd /home/example/deploy/example && python run_at_1000.py
+      minute: 0
+      month: '*'
+      name: run_at_1000
+      state: present
+      weekday: '*'
+    product: example
+    role: cavadeploy
+    user: example
