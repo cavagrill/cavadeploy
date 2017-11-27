@@ -6,6 +6,7 @@ Variables that need to be set are:
 
 - `product`: the name of the product, same as its repo name on GitHub
 - `user`: the user to run this product, could be different than `product` or the same
+- `do_cron`: whether or not to install cron jobs
 - `cron_jobs`: a list of cron jobs, each with the following parameters
   - `name`: a unique name for the cron job
   - `day`, `hour`, `minute`, `month`, `weekday`: per the crontab(5) format
@@ -20,6 +21,7 @@ Variables that need to be set are:
 Defaults are:
 
 - `cron_jobs`: empty list
+- `do_cron`: True
 - `notify_slack`: True
 - `npm_install`: False
 - `python_version`: 2
