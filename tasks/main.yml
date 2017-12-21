@@ -7,6 +7,7 @@
     repo: ssh://git@github.com/cavagrill/{{ product }}.git
     update: true
     force: true
+    version: '{{ branch }}'
   register: git
 - name: create virtualenv with up-to-date pip for python 2
   pip:

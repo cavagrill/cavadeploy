@@ -4,3 +4,4 @@ do_cron: true
 notify_slack: true
 npm_install: false
 python_version: 2
+branch: master

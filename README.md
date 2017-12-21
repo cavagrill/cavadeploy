@@ -5,6 +5,7 @@ Take a look at `example.yml` for an example of how to use it.
 Variables that need to be set are:
 
 - `product`: the name of the product, same as its repo name on GitHub
+- `branch`: the Git branch to deploy
 - `user`: the user to run this product, could be different than `product` or the same
 - `do_cron`: whether or not to install cron jobs
 - `cron_jobs`: a list of cron jobs, each with the following parameters
@@ -20,6 +21,7 @@ Variables that need to be set are:
 
 Defaults are:
 
+- `branch`: master
 - `cron_jobs`: empty list
 - `do_cron`: True
 - `notify_slack`: True
