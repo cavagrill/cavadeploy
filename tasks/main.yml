@@ -84,7 +84,7 @@
 - name: tell slack what happened
   slack:
     color: good
-    msg: '{{ product }} version {{ git.after }} has been deployed to {{ inventory_hostname}}.'
+    msg: '{{ branch }} branch of {{ product }} has been deployed to {{ inventory_hostname}}.'
     token: '{{ slack_token }}'
   become: false
   delegate_to: localhost
