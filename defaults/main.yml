@@ -5,3 +5,10 @@ notify_slack: true
 npm_install: false
 python_version: 2
 branch: master
+virtualenv:
+  2:
+    command: virtualenv
+    directory: ~/virtualenv
+  3:
+    command: pyvenv-3.6
+    directory: ~/venv
