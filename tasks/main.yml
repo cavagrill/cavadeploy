@@ -13,14 +13,14 @@
   pip:
     extra_args: '--upgrade'
     name: pip,wheel,setuptools
-    virtualenv: "{{ virtualenv[python_version]['virtualenv_directory'] }}"
-    virtualenv_command: "{{ virtualenv[python_version]['virtualenv_command'] }}"
+    virtualenv: "{{ virtualenv[python_version]['directory'] }}"
+    virtualenv_command: "{{ virtualenv[python_version]['command'] }}"
 - name: install packages into virtualenv
   pip:
     extra_args: '--upgrade'
     requirements: ~/deploy/{{ product }}/requirements.txt
-    virtualenv: "{{ virtualenv[python_version]['virtualenv_directory'] }}"
-    virtualenv_command: "{{ virtualenv[python_version]['virtualenv_command'] }}"
+    virtualenv: "{{ virtualenv[python_version]['directory'] }}"
+    virtualenv_command: "{{ virtualenv[python_version]['command'] }}"
 - name: create cron jobs
   cron:
     day: '{{ item.day }}'
