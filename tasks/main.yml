@@ -68,6 +68,7 @@
     name: PATH
     value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     env: yes
+  when: do_cron is defined and do_cron
 - name: install node requirements
   npm:
     path: "{{ npm_install }}"
