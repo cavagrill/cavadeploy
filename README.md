@@ -14,7 +14,6 @@ Variables that need to be set are:
   - `job`: the command to run
   - `state`: `present` to create the job, `absent` to remove it
 - `notify_slack`: whether or not to send a Slack notification
-- `npm_install`: path in which to run `npm install`, or False if not needed
 - `python_version`: either 2 or 3
 - `slack_email`: email address for Slack email integration
 - `slack_token`: token for Slack notifications
@@ -25,7 +24,6 @@ Defaults are:
 - `cron_jobs`: empty list
 - `do_cron`: True
 - `notify_slack`: True
-- `npm_install`: False
 - `python_version`: 2
 
 When using Python 2, a virtual environment will be created with
