@@ -53,6 +53,14 @@
     value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     env: yes
   when: do_cron is defined and do_cron
+- name: create .pip directory
+  file:
+    path: ~/.pip
+    state: directory
+- name: install pip.conf
+  copy:
+    src: pip.conf
+    dest: ~/.pip/pip.conf
 - name: tell slack what happened
   slack:
     color: good
