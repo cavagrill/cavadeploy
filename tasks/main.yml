@@ -54,19 +54,13 @@
     env: yes
   when: do_cron is defined and do_cron
 - name: create .pip directory
-  become_user: root
   file:
-    path: /home/{{ user }}/.pip
-    owner: '{{ user }}'
-    group: '{{ user }}'
+    path: ~/.pip
     state: directory
 - name: install pip.conf
-  become_user: root
   copy:
     src: pip.conf
-    dest: /home/{{ user }}/.pip/pip.conf
-    owner: '{{ user }}'
-    group: '{{ user }}'
+    dest: ~/.pip/pip.conf
 - name: tell slack what happened
   slack:
     color: good
