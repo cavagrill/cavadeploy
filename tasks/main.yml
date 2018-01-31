@@ -19,8 +19,7 @@
   pip:
     extra_args: '--upgrade'
     requirements: ~/deploy/{{ product }}/requirements.txt
-    virtualenv: "{{ virtualenv[python_version]['directory'] }}"
-    virtualenv_command: "{{ virtualenv[python_version]['command'] }}"
+    executable: "{{ virtualenv[python_version]['directory'] }}/bin/pip"
 - name: create cron jobs
   cron:
     day: '{{ item.day }}'
